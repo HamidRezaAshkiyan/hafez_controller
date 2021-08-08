@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       drawer: SideDrawer(),
       appBar: AppBar(
-        // backgroundColor: Colors.orange,
         centerTitle: true,
         title: Text(
           'کنترل حافظ',
@@ -43,6 +43,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Container(
+
         child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -67,30 +68,22 @@ class _HomeState extends State<Home> {
                         color: Colors.orange,
                       ),
                     ),
-                    // SizedBox(width: 20,),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //       border: OutlineInputBorder(),
-                    //       hintText: 'Enter a search term'
-                    //   ),
-                    // ),
                   ],
-                  // child: IconButton(
-                  //   onPressed: () {},
-                  //   icon: Icon(
-                  //     Icons.play_arrow,
-                  //     color: Colors.orange,
-                  //     size: 50.0,
-                  //   ),
-                  // ),
                 ),
                 SizedBox(height: 20,),
                 Center(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'شماره گروه اعلان',
+                  child: Container(
+                    width: 200,
+                    child: TextField(
+                      maxLength: 5,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'شماره گروه اعلان',
+                      ),
                     ),
                   ),
                 )
