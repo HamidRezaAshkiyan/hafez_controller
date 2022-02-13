@@ -1,6 +1,7 @@
-
+import 'package:hafez_controller/pages/book_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,10 +14,11 @@ class _HomeState extends State<Home> {
     return Scaffold(
       drawer: SideDrawer(),
       appBar: AppBar(
+        shadowColor: Colors.transparent,
         centerTitle: true,
         title: Text(
           'کنترل حافظ',
-          style: TextStyle(fontFamily: 'Vazir', fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       bottomNavigationBar: new BottomNavigationBar(
@@ -42,58 +44,84 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Container(
+      body: MyTabbedPage(),
+    );
+  }
+}
 
-        child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      iconSize: 50,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.play_arrow,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    SizedBox(width: 20,),
-                    IconButton(
-                      iconSize: 50,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.pause,
-                        color: Colors.orange,
-                      ),
-                    ),
-                  ],
+class GalleryController extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 100, vertical: 30),
+              child: TextField(
+                maxLength: 5,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'شماره پوشه تصاویر',
                 ),
-                SizedBox(height: 20,),
-                Center(
-                  child: Container(
-                    width: 200,
-                    child: TextField(
-                      maxLength: 5,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'شماره گروه اعلان',
-                      ),
-                    ),
-                  ),
-                )
-              ],
-              // child: ,
-            )),
+              ),
+            ),
+          ),
+          // SizedBox(height: 30,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(iconSize: 50,
+                  color: Colors.orange, onPressed: () {}, icon: Icon(Icons.skip_next)),
+              IconButton(iconSize: 50,
+                  color: Colors.orange, onPressed: () {}, icon: Icon(Icons.play_arrow)),
+              IconButton(iconSize: 50,
+                  color: Colors.orange, onPressed: () {}, icon: Icon(Icons.skip_previous))
+            ],
+          ),
+        ],
       ),
     );
   }
 }
+
+
+class CameraController extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                iconSize: 50,
+                onPressed: () {},
+                icon: Icon(
+                  Icons.play_arrow,
+                  color: Colors.orange,
+                ),
+              ),
+              SizedBox(width: 100,),
+              IconButton(
+                iconSize: 50,
+                onPressed: () {},
+                icon: Icon(
+                  Icons.stop,
+                  color: Colors.orange,
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+}
+
+
+
 
 class SideDrawer extends StatelessWidget {
   @override

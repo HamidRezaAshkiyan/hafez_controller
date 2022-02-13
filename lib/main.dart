@@ -9,12 +9,13 @@ void main() => runApp(MaterialApp(
   theme: ThemeData(
       fontFamily: 'Vazir',
       // colorScheme: ColorScheme.light(),
-      appBarTheme: AppBarTheme(backgroundColor: Colors.orange)
+      appBarTheme: AppBarTheme(backgroundColor: Colors.orange),
   ),
-  initialRoute: '/home',
+  // initialRoute: '/home',
   routes: {
-    '/': (context) => Loading(),
-    '/home': (context) => Home(),
+    // '/': (context) => Loading(),
+    // '/home': (context) => Home(),
+    '/': (context) => Home(),
   },
   localizationsDelegates: [
     GlobalCupertinoLocalizations.delegate,
