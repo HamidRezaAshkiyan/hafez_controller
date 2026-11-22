@@ -1,156 +1,130 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class MyTabbedPage extends StatefulWidget {
-  const MyTabbedPage({ Key? key }) : super(key: key);
+class BookControllerPage extends StatefulWidget {
+  const BookControllerPage({super.key});
+
   @override
-  _MyTabbedPageState createState() => _MyTabbedPageState();
+  State<BookControllerPage> createState() => _BookControllerPageState();
 }
 
-
-class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderStateMixin {
-  static const List<Tab> myTabs = <Tab>[
+class _BookControllerPageState extends State<BookControllerPage>
+    with SingleTickerProviderStateMixin {
+  static const List<Tab> _tabs = [
     Tab(text: 'قرآن'),
     Tab(text: 'مفاتیح'),
     Tab(text: 'اختصاصی'),
   ];
 
-  late TabController _tabController;
+  late final TabController _tabController;
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _pageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: myTabs.length);
+    _tabController = TabController(vsync: this, length: _tabs.length);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _titleController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 60,
-        bottom: TabBar(
+    return Column(
+      children: [
+        TabBar(
           controller: _tabController,
-          tabs: myTabs,
+          tabs: _tabs,
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          Column( // Quran Container
-            mainAxisAlignment: MainAxisAlignment.center,
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:[
-                  Center(
-                    child: Container(
-                      width: 200,
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'عنوان',
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _titleController,
+                            textAlign: TextAlign.center,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'عنوان سوره',
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      width: 200,
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'شماره صفحه',
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextField(
+                            controller: _pageController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            textAlign: TextAlign.center,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'شماره صفحه',
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  )
-                ],
+                    const SizedBox(height: 32),
+                    const BookTransportControls(),
+                  ],
+                ),
               ),
-              BookController(),
+              const Center(child: BookTransportControls()),
+              const Center(child: BookTransportControls()),
             ],
           ),
-          BookController(),
-          BookController(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-class BookController extends StatelessWidget {
+class BookTransportControls extends StatelessWidget {
+  const BookTransportControls({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /*Center(
-                child: Container(
-                  width: 200,
-                  child: TextField(
-                    maxLength: 5,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'شماره گروه اعلان',
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 50),*/
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    iconSize: 50,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.skip_next_outlined,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  IconButton(
-                    iconSize: 80,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.play_circle_outline_outlined,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  // SizedBox(width: 100),
-                  IconButton(
-                    iconSize: 80,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.restart_alt_outlined,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  // SizedBox(width: 100),
-                  IconButton(
-                    iconSize: 50,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.skip_previous_outlined,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  // SizedBox(width: 100),
-                ],
-              )
-            ],
-          )),
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 16,
+      runSpacing: 16,
+      children: [
+        IconButton.filledTonal(
+          iconSize: 36,
+          onPressed: () {},
+          icon: const Icon(Icons.skip_previous_outlined),
+        ),
+        IconButton.filled(
+          iconSize: 52,
+          onPressed: () {},
+          icon: const Icon(Icons.play_arrow),
+        ),
+        IconButton.filledTonal(
+          iconSize: 44,
+          onPressed: () {},
+          icon: const Icon(Icons.restart_alt_outlined),
+        ),
+        IconButton.filledTonal(
+          iconSize: 36,
+          onPressed: () {},
+          icon: const Icon(Icons.skip_next_outlined),
+        ),
+      ],
     );
   }
 }
