@@ -1,10 +1,11 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hafez_controller/main.dart';
 
 void main() {
   testWidgets('HafezControllerApp renders navigation tabs cleanly',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const HafezControllerApp());
+    await tester.pumpWidget(const ProviderScope(child: HafezControllerApp()));
     await tester.pumpAndSettle();
 
     expect(find.text('کنترل حافظ'), findsOneWidget);

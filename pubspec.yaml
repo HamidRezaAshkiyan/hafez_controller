@@ -12,8 +12,12 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
   http: ^1.2.2
   intl: any
+  mobile_scanner: ^6.0.7
+  shared_preferences: ^2.3.5
+  signalr_netcore: ^1.4.0
 
 dev_dependencies:
   flutter_test:
