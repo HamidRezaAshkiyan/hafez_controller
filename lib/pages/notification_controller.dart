@@ -1,149 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MyTabbedPage extends StatefulWidget {
-  const MyTabbedPage({ Key? key }) : super(key: key);
+class NotificationControllerPage extends StatefulWidget {
+  const NotificationControllerPage({super.key});
+
   @override
-  _MyTabbedPageState createState() => _MyTabbedPageState();
+  State<NotificationControllerPage> createState() =>
+      _NotificationControllerPageState();
 }
 
-
-class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderStateMixin {
-  static const List<Tab> myTabs = <Tab>[
+class _NotificationControllerPageState extends State<NotificationControllerPage>
+    with SingleTickerProviderStateMixin {
+  static const List<Tab> _tabs = [
     Tab(text: 'ارسال'),
     Tab(text: 'کنترل'),
   ];
 
-  late TabController _tabController;
+  late final TabController _tabController;
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _bodyController = TextEditingController();
+  final TextEditingController _groupIdController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: myTabs.length);
+    _tabController = TabController(vsync: this, length: _tabs.length);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _titleController.dispose();
+    _bodyController.dispose();
+    _groupIdController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 60,
-        bottom: TabBar(
+    return Column(
+      children: [
+        TabBar(
           controller: _tabController,
-          tabs: myTabs,
+          tabs: _tabs,
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Container(
-                    width: 200,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'عنوان',
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50,),
-                Center(
-                  child: Container(
-                    width: 200,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'متن',
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50,),
-                Container(
-                  width: 200,
-                  height: 50,
-                  child: ElevatedButton(
-                    // style: ButtonStyle(backgroundColor: ),
-                      onPressed: () {},
-                      child: Text('ارسال')
-                  ),
-                )
-              ],
-            ),
-          ),
-          NotificationController(),
-        ],
-      ),
-    );
-  }
-}
-
-class NotificationController extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    iconSize: 50,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.play_arrow,
-                      color: Colors.orange,
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextField(
+                      controller: _titleController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'عنوان اعلان',
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 100,
-                  ),
-                  IconButton(
-                    iconSize: 50,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.pause,
-                      color: Colors.orange,
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _bodyController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'متن اعلان',
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Center(
-                child: Container(
-                  width: 200,
-                  child: TextField(
-                    maxLength: 5,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'شماره گروه اعلان',
+                    const SizedBox(height: 24),
+                    FilledButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.send),
+                      label: const Text('ارسال به نمایشگر'),
                     ),
-                  ),
+                  ],
                 ),
-              )
+              ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton.filled(
+                          iconSize: 44,
+                          onPressed: () {},
+                          icon: const Icon(Icons.play_arrow),
+                        ),
+                        const SizedBox(width: 32),
+                        IconButton.filledTonal(
+                          iconSize: 44,
+                          onPressed: () {},
+                          icon: const Icon(Icons.pause),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: _groupIdController,
+                      maxLength: 5,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'شماره گروه اعلان',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
-          )),
+          ),
+        ),
+      ],
     );
   }
 }
